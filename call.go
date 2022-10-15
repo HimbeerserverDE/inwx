@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"encoding/json"
 	"fmt"
+	"net"
 	"net/http"
 )
 
@@ -43,6 +44,12 @@ func (e *ErrUnexpectedStatus) Error() string {
 // Call sends a Call to the API endpoint and waits for a response or an error.
 // It returns net.ErrClosed if the Client is closed.
 func (c *Client) Call(call Call) (*Response, error) {
+	select {
+	case <-c.Closed():
+		return nil, net.ErrClosed
+	default:
+	}
+
 	wrapped := &rpcCall{
 		Method: call.method(),
 		Params: call,
