@@ -8,3 +8,8 @@ type loginCall struct {
 
 func (c *loginCall) method() string           { return "account.login" }
 func (c *loginCall) expectedStatus() []Status { return []Status{Success} }
+
+type logoutCall struct{}
+
+func (c *logoutCall) method() string           { return "account.logout" }
+func (c *logoutCall) expectedStatus() []Status { return []Status{SuccessClosing} }
