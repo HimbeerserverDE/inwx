@@ -1,11 +1,18 @@
 package inwx
 
 import (
-	"context"
+	"bytes"
+	"encoding/json"
 	"fmt"
+	"net/http"
 
 	"github.com/ybbus/jsonrpc/v3"
 )
+
+type rpcCall struct {
+	method string `json:"method"`
+	params any    `json:"params,omitempty"`
+}
 
 type Call interface {
 	method() string
@@ -13,8 +20,8 @@ type Call interface {
 }
 
 type Response struct {
-	StatusCode Status
-	Data       any
+	StatusCode Status `json:"code"`
+	Data       any    `json:"resData"`
 }
 
 type ErrInvalidResponse struct {
@@ -36,34 +43,41 @@ func (e *ErrUnexpectedStatus) Error() string {
 }
 
 func (c *Client) Call(call Call) (*Response, error) {
-	resp, err := c.rpcClient.Call(context.Background(), call.method(), call)
+	wrapped := &rpcCall{
+		method: call.method(),
+		params: call,
+	}
+
+	body := &bytes.Buffer{}
+	if err := json.NewEncoder(body).Encode(wrapped); err != nil {
+		return nil, err
+	}
+
+	req, err := http.NewRequest("POST", string(c.Endpoint()), body)
 	if err != nil {
 		return nil, err
 	}
 
-	meta, ok := resp.Result.(map[string]any)
-	if !ok {
-		return nil, &ErrInvalidResponse{resp}
+	resp, err := c.httpClient.Do(req)
+	if err != nil {
+		return nil, err
 	}
 
-	code := meta["code"].(Status)
-	data := meta["resData"]
+	response := &Response{}
+	if err := json.NewDecoder(resp.Body).Decode(response); err != nil {
+		return nil, err
+	}
 
 	var expectedStatus bool
 	for _, expected := range call.expectedStatus() {
-		if expected == code {
+		if expected == response.StatusCode {
 			expectedStatus = true
 			break
 		}
 	}
 
 	if !expectedStatus {
-		return nil, &ErrUnexpectedStatus{call.expectedStatus(), code}
-	}
-
-	response := &Response{
-		StatusCode: code,
-		Data:       data,
+		return nil, &ErrUnexpectedStatus{call.expectedStatus(), response.StatusCode}
 	}
 
 	return response, nil

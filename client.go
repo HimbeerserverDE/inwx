@@ -54,6 +54,9 @@ func Login(endpoint Endpoint, user, passwd string) (*Client, error) {
 	return clt, nil
 }
 
+// Endpoint returns the API endpoint used by the Client for HTTP requests.
+func (c *Client) Endpoint() Endpoint { return c.endpoint }
+
 // Closed returns a channel which is closed when the Client is closed.
 func (c *Client) Closed() <-chan struct{} { return c.closed }
 
