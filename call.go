@@ -8,8 +8,8 @@ import (
 )
 
 type rpcCall struct {
-	method string `json:"method"`
-	params any    `json:"params,omitempty"`
+	Method string `json:"method"`
+	Params any    `json:"params,omitempty"`
 }
 
 type Call interface {
@@ -34,8 +34,8 @@ func (e *ErrUnexpectedStatus) Error() string {
 
 func (c *Client) Call(call Call) (*Response, error) {
 	wrapped := &rpcCall{
-		method: call.method(),
-		params: call,
+		Method: call.method(),
+		Params: call,
 	}
 
 	body := &bytes.Buffer{}
