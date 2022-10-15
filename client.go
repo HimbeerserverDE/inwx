@@ -6,8 +6,6 @@ import (
 	"net/http/cookiejar"
 	"sync/atomic"
 	"time"
-
-	"github.com/ybbus/jsonrpc/v3"
 )
 
 // An Endpoint is the server to communicate with.
@@ -23,7 +21,6 @@ const requestTimeout = 30 * time.Second
 // A Client is a session handle for the API.
 type Client struct {
 	httpClient *http.Client
-	rpcClient  jsonrpc.RPCClient
 	endpoint   Endpoint
 
 	closed  chan struct{}
@@ -42,17 +39,17 @@ func Login(endpoint Endpoint, user, passwd string) (*Client, error) {
 		Timeout: requestTimeout,
 	}
 
-	rpcClient := jsonrpc.NewClientWithOpts(string(endpoint), &jsonrpc.RPCClientOpts{
-		HTTPClient: httpClient,
-	})
-
 	clt := &Client{
 		httpClient: httpClient,
-		rpcClient:  rpcClient,
 		endpoint:   endpoint,
 	}
 
-	// TODO: login
+	if _, err := clt.Call(&loginCall{
+		User:   user,
+		Passwd: passwd,
+	}); err != nil {
+		return nil, err
+	}
 
 	return clt, nil
 }
@@ -78,7 +75,7 @@ func (c *Client) Close() error {
 }
 
 func (c *Client) closeLogout(err error) error {
-	// TODO: logout
+	c.Call(&logoutCall{})
 
 	return c.close(err)
 }

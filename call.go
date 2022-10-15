@@ -9,7 +9,6 @@ import (
 
 type Call interface {
 	method() string
-	params() any
 	expectedStatus() []Status
 }
 
@@ -37,7 +36,7 @@ func (e *ErrUnexpectedStatus) Error() string {
 }
 
 func (c *Client) Call(call Call) (*Response, error) {
-	resp, err := c.rpcClient.Call(context.Background(), call.method(), call.params())
+	resp, err := c.rpcClient.Call(context.Background(), call.method(), call)
 	if err != nil {
 		return nil, err
 	}
