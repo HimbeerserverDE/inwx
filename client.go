@@ -42,6 +42,7 @@ func Login(endpoint Endpoint, user, passwd string) (*Client, error) {
 	clt := &Client{
 		httpClient: httpClient,
 		endpoint:   endpoint,
+		closed:     make(chan struct{}),
 	}
 
 	if _, err := clt.Call(&loginCall{
