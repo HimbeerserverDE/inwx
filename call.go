@@ -5,8 +5,6 @@ import (
 	"encoding/json"
 	"fmt"
 	"net/http"
-
-	"github.com/ybbus/jsonrpc/v3"
 )
 
 type rpcCall struct {
@@ -22,14 +20,6 @@ type Call interface {
 type Response struct {
 	StatusCode Status `json:"code"`
 	Data       any    `json:"resData"`
-}
-
-type ErrInvalidResponse struct {
-	resp *jsonrpc.RPCResponse
-}
-
-func (e *ErrInvalidResponse) Error() string {
-	return fmt.Sprintf("invalid API response: %v", e.resp)
 }
 
 type ErrUnexpectedStatus struct {
