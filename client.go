@@ -12,8 +12,13 @@ import (
 type Endpoint string
 
 const (
+	// Production is the JSON-RPC production endpoint.
+	// Calls can modify real zones. Only use this if you really need it.
 	Production Endpoint = "https://api.domrobot.com/jsonrpc/"
-	Sandbox             = "https://api.ote.domrobot.com/jsonrpc/"
+
+	// Sandbox is the JSON-RPC sandbox endpoint.
+	// Use this endpoint for experiments or testing of any kind.
+	Sandbox = "https://api.ote.domrobot.com/jsonrpc/"
 )
 
 const requestTimeout = 30 * time.Second
@@ -28,6 +33,11 @@ type Client struct {
 	err     error
 }
 
+// Login creates a new Client and attempts to start a session
+// with the given credentials.
+//
+// Two-factor authentication is currently not supported,
+// contributions are welcome.
 func Login(endpoint Endpoint, user, passwd string) (*Client, error) {
 	jar, err := cookiejar.New(&cookiejar.Options{})
 	if err != nil {

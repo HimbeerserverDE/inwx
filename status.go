@@ -2,6 +2,7 @@ package inwx
 
 // A Status contains basic information
 // about whether and how a Call was processed.
+// See https://www.inwx.com/en/help/apidoc/f/ch04.html for descriptions.
 type Status int
 
 const (
