@@ -48,9 +48,9 @@ const (
 type URLRdrType string
 
 const (
-	Permanent = "HEADER301"
-	Temporary = "HEADER302"
-	Frame     = "FRAME"
+	Permanent URLRdrType = "HEADER301"
+	Temporary            = "HEADER302"
+	Frame                = "FRAME"
 )
 
 // A RecordInfo contains DNS as well as INWX specific record information.
