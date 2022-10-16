@@ -49,7 +49,7 @@ func (c *Client) Call(call Call) (*Response, error) {
 		return nil, err
 	}
 
-	response := &Response{}
+	response := &Response{Data: &json.RawMessage{}}
 	if err := json.NewDecoder(resp.Body).Decode(response); err != nil {
 		return nil, err
 	}
