@@ -33,6 +33,7 @@ func (c *NSRecordInfoCall) expectedStatus() []Status { return []Status{Success} 
 type NSUpdateRecordsCall struct {
 	IDs []int `json:"id"`
 	RecordInfo
+	TestingMode bool `json:"testing"`
 }
 
 func (c *NSUpdateRecordsCall) method() string           { return "nameserver.updateRecord" }
