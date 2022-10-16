@@ -31,19 +31,8 @@ func (c *NSRecordInfoCall) expectedStatus() []Status { return []Status{Success} 
 
 // A NSUpdateRecordsCall updates one or more DNS records.
 type NSUpdateRecordsCall struct {
-	IDs                 []int                 `json:"id"`
-	Name                string                `json:"name,omitempty"`
-	Type                RecordType            `json:"type,omitempty"`
-	Content             string                `json:"content,omitempty"`
-	Priority            int                   `json:"prio,omitempty"`
-	TTL                 int                   `json:"ttl,omitempty"`
-	URLRedirectType     RecordURLRedirectType `json:"urlRedirectType,omitempty"`
-	URLRedirectTitle    string                `json:"urlRedirectTitle,omitempty"`
-	URLRedirectDesc     string                `json:"urlRedirectDescription,omitempty"`
-	URLRedirectFavIcon  string                `json:"urlRedirectFavIcon,omitempty"`
-	URLRedirectKeywords string                `json:"urlRedirectKeywords,omitempty"`
-	URLAppend           bool                  `json:"urlAppend,omitempty"`
-	TestingMode         bool                  `json:"testing,omitempty"`
+	IDs []int `json:"id"`
+	RecordInfo
 }
 
 func (c *NSUpdateRecordsCall) method() string           { return "nameserver.updateRecord" }
