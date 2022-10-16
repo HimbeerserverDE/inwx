@@ -55,17 +55,17 @@ const (
 
 // A RecordInfo contains DNS as well as INWX specific record information.
 type RecordInfo struct {
-	Name                string     `json:"name"`
-	Type                RecordType `json:"type"`
-	Content             string     `json:"content"`
-	TTL                 int        `json:"ttl"`
-	Priority            int        `json:"prio"`
-	URLRedirectType     URLRdrType `json:"urlRedirectType"`
-	URLRedirectTitle    string     `json:"urlRedirectTitle"`
-	URLRedirectDesc     string     `json:"urlRedirectDescription"`
-	URLRedirectKeywords string     `json:"urlRedirectKeywords"`
-	URLRedirectFavIcon  string     `json:"urlRedirectFavIcon"`
-	URLAppend           bool       `json:"urlAppend"`
+	Name                string     `json:"name,omitempty"`
+	Type                RecordType `json:"type,omitempty"`
+	Content             string     `json:"content,omitempty"`
+	TTL                 int        `json:"ttl,omitempty"`
+	Priority            int        `json:"prio,omitempty"`
+	URLRedirectType     URLRdrType `json:"urlRedirectType,omitempty"`
+	URLRedirectTitle    string     `json:"urlRedirectTitle,omitempty"`
+	URLRedirectDesc     string     `json:"urlRedirectDescription,omitempty"`
+	URLRedirectKeywords string     `json:"urlRedirectKeywords,omitempty"`
+	URLRedirectFavIcon  string     `json:"urlRedirectFavIcon,omitempty"`
+	URLAppend           bool       `json:"urlAppend,omitempty"`
 }
 
 // A NSRecord consists of an ID and RecordInfo.
