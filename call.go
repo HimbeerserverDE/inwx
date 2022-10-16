@@ -3,7 +3,6 @@ package inwx
 import (
 	"bytes"
 	"encoding/json"
-	"fmt"
 	"net"
 	"net/http"
 )
@@ -19,26 +18,6 @@ type rpcCall struct {
 type Call interface {
 	method() string
 	expectedStatus() []Status
-}
-
-// A Response contains the Status of a response to a Call
-// as well as the response parameters.
-// Data is nil if there are no response parameters.
-type Response struct {
-	StatusCode Status `json:"code"`
-	Data       any    `json:"resData"`
-}
-
-// ErrUnexpectedStatus indicates that a Call was responded to
-// but the Status doesn't match any of the expected Statuses of the Call.
-type ErrUnexpectedStatus struct {
-	Expected []Status
-	Got      Status
-}
-
-func (e *ErrUnexpectedStatus) Error() string {
-	const format = "unexpected status code: expected %v, got %v"
-	return fmt.Sprintf(format, e.Expected, e.Got)
 }
 
 // Call sends a Call to the API endpoint and waits for a response or an error.
