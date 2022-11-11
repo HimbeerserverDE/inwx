@@ -12,5 +12,5 @@ type NSRecordInfoResponse struct {
 	SlaveDNS      SlaveInfo  `json:"slaveDns"`
 	SOASerial     string     `json:"SOAserial"`
 	RecordCount   int        `json:"count"`
-	Record        []NSRecord `json:"record"`
+	Records       []NSRecord `json:"record"`
 }
