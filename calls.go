@@ -16,14 +16,14 @@ func (c *logoutCall) expectedStatus() []Status { return []Status{SuccessClosing}
 
 // A NSRecordInfoCall returns detailed information about a DNS record.
 type NSRecordInfoCall struct {
-	DomainName string `json:"domain,omitempty"`
-	DomainID   int    `json:"roId,omitempty"`
-	RecordID   int    `json:"recordId,omitempty"`
-	Type       string `json:"type,omitempty"`
-	Name       string `json:"name,omitempty"`
-	Content    string `json:"content,omitempty"`
-	TTL        int    `json:"ttl,omitempty"`
-	Priority   int    `json:"prio,omitempty"`
+	DomainName string     `json:"domain,omitempty"`
+	DomainID   int        `json:"roId,omitempty"`
+	RecordID   int        `json:"recordId,omitempty"`
+	Type       RecordType `json:"type,omitempty"`
+	Name       string     `json:"name,omitempty"`
+	Content    string     `json:"content,omitempty"`
+	TTL        int        `json:"ttl,omitempty"`
+	Priority   int        `json:"prio,omitempty"`
 }
 
 func (c *NSRecordInfoCall) method() string           { return "nameserver.info" }
